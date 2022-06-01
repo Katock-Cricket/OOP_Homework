@@ -29,6 +29,7 @@ public class BossObj extends GameObj{
 				life=-1;
 				if(dead==0) {
 					GameWindow.score+=100;
+					GameWindow.money+=100;
 					dead=1;
 				}
 				dead=1;
@@ -40,6 +41,9 @@ public class BossObj extends GameObj{
 				GameUtils.removeObjList.add(this);
 				if(GameWindow.mode==1) {
 					GameWindow.state=4;
+				}
+				else if(GameWindow.mode==3) {
+					GameWindow.state=6;
 				}
 			}
 		}

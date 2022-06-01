@@ -12,7 +12,7 @@ public class EnemyObj extends GameObj{
 		super.paintSelf(g);
 		y += speed;
 		if(this.getRec().intersects(this.frame.planeobj.getRec())){
-			if(GameWindow.mode==4) {
+			if(GameWindow.mode==4||GameWindow.mode==3) {
 				PlaneObj.life-=2;
 				ExplodeObj explodeObj = new ExplodeObj(x,y);
 				GameUtils.explodeObjList.add(explodeObj);
@@ -33,6 +33,7 @@ public class EnemyObj extends GameObj{
 				this.x=-200;
 				this.y=200;
 				GameWindow.score++;
+				GameWindow.money++;
 				GameUtils.removeObjList.add(shellObj);
 				GameUtils.removeObjList.add(this);
 			}

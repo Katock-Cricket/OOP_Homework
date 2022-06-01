@@ -12,7 +12,7 @@ public class BulletObj extends GameObj{
 		super.paintSelf(g);
 		y += speed;
 		if(this.getRec().intersects(this.frame.planeobj.getRec())) {
-			if(GameWindow.mode==4) {
+			if(GameWindow.mode==4||GameWindow.mode==3) {
 				PlaneObj.life-=5;
 				this.x=-300;
 				this.y=300;

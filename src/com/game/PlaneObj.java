@@ -19,20 +19,6 @@ public class PlaneObj extends GameObj{
 		if(life<=0) {
 			GameWindow.state=3;
 		}
-		for(BonusObj bonusobj:GameUtils.bonusObjList) {
-			if(this.getRec().intersects(bonusobj.getRec())) {
-				if(bonusobj.kind==1) {
-					life+=2;
-				}
-				else if(bonusobj.kind!=1) {
-					GameWindow.isbuffed=true;
-					GameWindow.buffkind=bonusobj.kind;
-				}
-				bonusobj.setX(-600);
-				bonusobj.setY(600);
-				GameUtils.removeObjList.add(bonusobj);
-			}
-		}
 	}
 
 	@Override
