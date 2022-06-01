@@ -12,6 +12,12 @@ public class GameWindow extends JFrame{
 	public static int score = 0;
 	//游戏模式 1:经典 2:无尽 4:生存
 	public static int mode = 0;
+	//飞机身上是否有buff
+	public static boolean isbuffed = false;
+	//buff计时
+	int buffcount=0;
+	//buff种类
+	public static int buffkind = 0;
 	Image offScreenImg=null;
 	int width=600;
 	int height=600;
@@ -25,8 +31,12 @@ public class GameWindow extends JFrame{
 	public BossObj bossobj = null;
 	//repaint 次数
 	int count=1;
+	//敌人计数
 	int enemyCount=0;
+	//boss计数
 	int bossCount=1;
+	//原始攻击力记录
+	int originatk=1;
 	//启动
 	public void launch() {
 		//窗口初始化
@@ -69,12 +79,17 @@ public class GameWindow extends JFrame{
 						enemyCount=0;
 						score=0;
 						bossCount=1;
+						isbuffed=false;
+						buffkind=0;
+						buffcount=0;
 						GameUtils.shellObjList.clear();
 						GameUtils.bulletObjList.clear();
 						GameUtils.enemyObjList.clear();
 						GameUtils.explodeObjList.clear();
 						GameUtils.removeObjList.clear();
 						GameUtils.gameObjList.clear();
+						GameUtils.eliteObjList.clear();
+						GameUtils.bonusObjList.clear();
 						if(e.getX()>=210&&e.getX()<=390) {
 							if(e.getY()>=400&&e.getY()<=480) {
 								state = 0; 
@@ -132,6 +147,10 @@ public class GameWindow extends JFrame{
 			gImage.drawImage(GameUtils.bgImg, 0, 0, this);
 			gImage.drawImage(GameUtils.bossImg, 220, 120, this);
 			gImage.drawImage(GameUtils.explodeImg, 270, 350, this);
+			gImage.drawImage(GameUtils.atkImg,100,100,this);
+			gImage.drawImage(GameUtils.lifeImg,100,200,this);
+			gImage.drawImage(GameUtils.doubleImg,100,300,this);
+			gImage.drawImage(GameUtils.ramdomImg,100,400,this);
 			GameUtils.drawWord(gImage,"开始游戏", Color.yellow, 40, 218, 300);
 		}
 		
@@ -152,15 +171,16 @@ public class GameWindow extends JFrame{
 			GameUtils.drawWord(gImage, "得分: "+score+"分", Color.GREEN, 20, 30, 100);
 			
 			if(mode==1) 
-				GameUtils.drawWord(gImage, "经典模式，按下空格键以暂停", Color.red, 20, 30, 570);
+				GameUtils.drawWord(gImage, "经典模式，按下空格键以暂停", Color.red, 20, 30, 550);
 			else if(mode==2) 
-				GameUtils.drawWord(gImage, "无尽模式，按下空格键以暂停", Color.red, 20, 30, 570);
+				GameUtils.drawWord(gImage, "无尽模式，按下空格键以暂停", Color.red, 20, 30, 550);
 			else if(mode==4) {
-				GameUtils.drawWord(gImage, "生存模式，按下空格键以暂停", Color.red, 20, 30, 570);
+				GameUtils.drawWord(gImage, "生存模式，按下空格键以暂停", Color.red, 20, 30, 550);
 				gImage.setColor(Color.white);
 				gImage.fillRect(20,570,100,10);
 				gImage.setColor(Color.red);
 				gImage.fillRect(20,570,PlaneObj.life*10,10);
+				GameUtils.drawWord(gImage, "life:"+PlaneObj.life, Color.red, 20, 450, 580);
 			}
 		}
 		if(state==3) {
@@ -198,13 +218,33 @@ public class GameWindow extends JFrame{
 		}
 		g.drawImage(offScreenImg,0,0,this);
 		count++;
+		if(isbuffed==true) {
+			buffcount++;
+			if(buffkind==2) {
+				PlaneObj.atk=originatk*2;
+			}
+			if(buffcount==400) {
+				buffcount=0;
+				buffkind=0;
+				PlaneObj.atk=originatk;
+				isbuffed=false;
+			}
+		}
 	}
 	
 	void createObj() {
 		//每重画15次产生1个子弹和飞机
 		if(count%15==0) {
-			GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg,planeobj.getX()+3,planeobj.getY()-16,14,29,5,this));
-			GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size()-1));
+			if(buffkind!=3) {
+				GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg,planeobj.getX()+3,planeobj.getY()-16,14,29,5,this));
+				GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size()-1));
+			}
+			else if(buffkind==3) {
+				GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg,planeobj.getX()-12,planeobj.getY()-16,14,29,5,this));
+				GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size()-1));
+				GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg,planeobj.getX()+18,planeobj.getY()-16,14,29,5,this));
+				GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size()-1));
+			}
 		}
 		if(count%15==0) {
 			GameUtils.enemyObjList.add(new EnemyObj(GameUtils.enemyImg,(int)(Math.random()*12)*50,0,49,36,5,this));
@@ -219,9 +259,40 @@ public class GameWindow extends JFrame{
 			bossobj = new BossObj(GameUtils.bossImg,250,35,155,100,5,this,bossCount*10);
 			GameUtils.gameObjList.add(bossobj);
 		}
-		if(count%150==0 && mode == 4) {
+		if(count%200==0 && mode == 4) {
 			GameUtils.eliteObjList.add(new EliteObj(GameUtils.eliteImg,(int)(Math.random()*6)*90+30,0,68,51,3,this));
 			GameUtils.gameObjList.add(GameUtils.eliteObjList.get(GameUtils.eliteObjList.size()-1));
+		}
+		if(count%800==0 && mode == 4) {
+			int kind = (int)(Math.random()*4)+1;
+			int kind2 = (int)(Math.random()*3)+1;
+			System.out.println("kind="+kind+" kind2="+kind2);
+			if(kind==1) {
+				GameUtils.bonusObjList.add(new BonusObj(GameUtils.lifeImg,(int)(Math.random()*12)*50,0,50,50,5,this,1));
+				GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+			}
+			else if(kind==2) {
+				GameUtils.bonusObjList.add(new BonusObj(GameUtils.atkImg,(int)(Math.random()*12)*50,0,50,50,5,this,2));
+				GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+			}
+			else if(kind==3) {
+				GameUtils.bonusObjList.add(new BonusObj(GameUtils.doubleImg,(int)(Math.random()*12)*50,0,50,50,5,this,3));
+				GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+			}
+			else if(kind==4) {
+				if(kind2==1) {
+					GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg,(int)(Math.random()*12)*50,0,50,50,5,this,1));
+					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+				}
+				else if(kind2==2) {
+					GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg,(int)(Math.random()*12)*50,0,50,50,5,this,2));
+					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+				}
+				else if(kind2==3) {
+					GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg,(int)(Math.random()*12)*50,0,50,50,5,this,3));
+					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+				}
+			}
 		}
 	}
 	

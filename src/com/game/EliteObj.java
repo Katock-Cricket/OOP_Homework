@@ -9,6 +9,7 @@ public class EliteObj extends GameObj{
 	
 	int life=5;
 	
+	int dead=0;
 	@Override
 	public void paintSelf(Graphics g) {
 		// TODO Auto-generated method stub
@@ -29,18 +30,21 @@ public class EliteObj extends GameObj{
 		}
 		for(ShellObj shellObj:GameUtils.shellObjList) {
 			if(this.getRec().intersects(shellObj.getRec())) {
-				life--;
+				life-=PlaneObj.atk;
 				shellObj.setX(-100);
 				shellObj.setY(100);
 				GameUtils.removeObjList.add(shellObj);
 			}
-			if(life==0) {
+			if(life<=0) {
 				ExplodeObj explodeObj = new ExplodeObj(x,y);
 				GameUtils.explodeObjList.add(explodeObj);
 				GameUtils.removeObjList.add(explodeObj);
 				this.x=-200;
 				this.y=200;
-				GameWindow.score+=5;
+				if(dead==0) {
+					GameWindow.score+=5;
+					dead=1;
+				}
 				GameUtils.removeObjList.add(this);
 			}
 		}

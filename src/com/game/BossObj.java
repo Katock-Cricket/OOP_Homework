@@ -23,12 +23,18 @@ public class BossObj extends GameObj{
 				shellobj.setX(-100);
 				shellobj.setY(100);
 				GameUtils.removeObjList.add(shellobj);
-				life--;
+				life-=PlaneObj.atk;
 			}
-			if(life==0) {
+			if(life<=0) {
 				life=-1;
+				if(dead==0) {
+					GameWindow.score+=100;
+					dead=1;
+				}
 				dead=1;
-				GameWindow.score+=100;
+				ExplodeObj explodeObj = new ExplodeObj(x,y);
+				GameUtils.explodeObjList.add(explodeObj);
+				GameUtils.removeObjList.add(explodeObj);
 				this.x=-200;
 				this.y=200;
 				GameUtils.removeObjList.add(this);

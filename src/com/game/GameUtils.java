@@ -22,6 +22,14 @@ public class GameUtils {
 	
 	public static Image eliteImg = Toolkit.getDefaultToolkit().getImage("imgs/Elite.png");
 	
+	public static Image lifeImg = Toolkit.getDefaultToolkit().getImage("imgs/healthobj.png");
+	
+	public static Image atkImg = Toolkit.getDefaultToolkit().getImage("imgs/ATKobj.png");
+	
+	public static Image doubleImg = Toolkit.getDefaultToolkit().getImage("imgs/doubleobj.png");
+
+	public static Image ramdomImg = Toolkit.getDefaultToolkit().getImage("imgs/randomobj.png");
+	
 	public static List<ShellObj> shellObjList = new ArrayList<>();
 	
 	public static List<GameObj> gameObjList = new ArrayList<>();
@@ -35,6 +43,8 @@ public class GameUtils {
 	public static List<BulletObj> bulletObjList = new ArrayList<>();
 	
 	public static List<EliteObj> eliteObjList = new ArrayList<>();
+	
+	public static List<BonusObj> bonusObjList = new ArrayList<>();
 	
 	public static void drawWord(Graphics g,String str,Color color,int size,int x,int y) {
 		g.setColor(color);

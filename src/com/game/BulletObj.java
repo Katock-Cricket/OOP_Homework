@@ -14,6 +14,9 @@ public class BulletObj extends GameObj{
 		if(this.getRec().intersects(this.frame.planeobj.getRec())) {
 			if(GameWindow.mode==4) {
 				PlaneObj.life-=5;
+				this.x=-300;
+				this.y=300;
+				GameUtils.removeObjList.add(this);
 			}
 			else GameWindow.state = 3;
 		}
