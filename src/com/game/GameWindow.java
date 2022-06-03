@@ -45,6 +45,8 @@ public class GameWindow extends JFrame{
 	int shopflag2=0;
 	int shopflag3=0;
 	int bossdecflag=0;//boss减少20%生命的标志
+	//bgm对象
+	static Bgm bgm = new Bgm("resources/normal.mp3");;
 	//启动
 	public void launch() {
 		//窗口初始化
@@ -216,6 +218,13 @@ public class GameWindow extends JFrame{
 		
 		//
 		if(state==1) {
+			System.out.println("state=1");
+			//播放对应的音乐
+			if (!bgm.playing) {
+				bgm.start();
+				System.out.println("bgm start");
+				bgm.playing=true;
+			}
 			if(bossobj!=null&&bossobj.dead==1) {
 				bossobj=null;
 				bossCount++;
@@ -287,6 +296,12 @@ public class GameWindow extends JFrame{
 			}
 		}
 		if(state==3) {
+			System.out.println("state=3");
+			if (bgm.playing) {
+				bgm.stop();
+				System.out.println("bgm stopped");
+				bgm.playing=false;
+			}
 			gImage.drawImage(GameUtils.bgImg, 0, 0, this);
 			gImage.drawImage(GameUtils.explodeImg, planeobj.getX()-35, planeobj.getY()-50, this);
 			GameUtils.drawWord(gImage,"游戏结束", Color.red, 40, 218, 300);
@@ -297,6 +312,10 @@ public class GameWindow extends JFrame{
 			bossobj=null;
 		}
 		if(state==4) {
+			if (bgm.playing) {
+				bgm.stop();
+				bgm.playing=false;
+			}
 			gImage.drawImage(GameUtils.bgImg, 0, 0, this);
 			gImage.drawImage(GameUtils.explodeImg, bossobj.getX()+30, bossobj.getY(), this);
 			GameUtils.drawWord(gImage,"通关成功", Color.red, 40, 218, 300);
@@ -307,6 +326,10 @@ public class GameWindow extends JFrame{
 			bossobj=null;
 		}
 		if(state==5) {
+			if (bgm.playing) {
+				bgm.stop();
+				bgm.playing=false;
+			}
 			gImage.drawImage(GameUtils.bgImg, 0, 0, this);
 			gImage.setColor(Color.green);
 			gImage.fillRect(210, 80, 180, 80);
@@ -324,6 +347,10 @@ public class GameWindow extends JFrame{
 			mode=0;
 		}
 		if(state==6) {
+			if (bgm.playing) {
+				bgm.stop();
+				bgm.playing=false;
+			}
 			gImage.drawImage(GameUtils.bgImg, 0, 0, this);
 			price = 10 + 5 * bossCount;
 			String str = String.valueOf(price);
