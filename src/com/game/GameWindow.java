@@ -98,6 +98,12 @@ public class GameWindow extends JFrame{
 							}
 							repaint();
 						}
+						else if(e.getX()>=500&&e.getX()<=600){
+							if(e.getY()>=540&&e.getY()<=600){
+								state=0;
+								repaint();
+							}
+						}
 					}
 					else if(state==3||state==4) {
 						price=0;
@@ -193,6 +199,12 @@ public class GameWindow extends JFrame{
 							}
 							PlaneObj.life=10-2*difficulty;
 							repaint();
+						}
+						else if(e.getX()>=500&&e.getX()<=600) {
+							if (e.getY() >= 540 && e.getY() <= 600) {
+								state = 5;
+								repaint();
+							}
 						}
 					}
 				}
@@ -367,10 +379,12 @@ public class GameWindow extends JFrame{
 			gImage.fillRect(210, 200, 180, 80);
 			gImage.fillRect(210, 320, 180, 80);
 			gImage.fillRect(210, 440, 180, 80);
+			gImage.fillRect(500, 540, 100, 60);
 			GameUtils.drawWord(gImage, "经典模式", Color.red, 40, 220, 130);
 			GameUtils.drawWord(gImage, "无尽模式", Color.red, 40, 220, 250);
 			GameUtils.drawWord(gImage, "关卡模式", Color.red, 40, 220, 370);
 			GameUtils.drawWord(gImage, "生存模式", Color.red, 40, 220, 490);
+			GameUtils.drawWord(gImage, "返回", Color.red, 40, 500, 580);
 			bossobj=null;
 			PlaneObj.life=10;
 			originatk=1;
@@ -409,12 +423,11 @@ public class GameWindow extends JFrame{
 			gImage.fillRect(210, 80, 180, 80);
 			gImage.fillRect(210, 200, 180, 80);
 			gImage.fillRect(210, 320, 180, 80);
+			gImage.fillRect(500, 540, 100, 60);
 			GameUtils.drawWord(gImage, "简单", Color.red, 40, 260, 130);
 			GameUtils.drawWord(gImage, "普通", Color.red, 40, 260, 250);
 			GameUtils.drawWord(gImage, "困难", Color.red, 40, 260, 370);
-		}
-		if(bossobj!=null) {
-			GameUtils.drawWord(gImage, "life"+bossobj.life, Color.red, 20, 500, 80);
+			GameUtils.drawWord(gImage, "返回", Color.red, 40, 500, 580);
 		}
 		g.drawImage(offScreenImg,0,0,this);
 		count++;
@@ -501,7 +514,7 @@ public class GameWindow extends JFrame{
 					GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg,(int)(Math.random()*12)*50,0,50,50,5,this,3));
 					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
 				}
-				else if(kind2==3) {
+				else if(kind2==4) {
 					GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg,(int)(Math.random()*12)*50,0,50,50,5,this,4));
 					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
 				}
