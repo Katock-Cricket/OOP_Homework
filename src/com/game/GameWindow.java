@@ -10,7 +10,7 @@ public class GameWindow extends JFrame{
 	public static int state = 0;
 	//得分
 	public static int score = 0;
-	//游戏模式 1:经典 2:无尽 3:关卡 4:生存
+	//游戏模式 1:经典 2:关卡 3:生存 4:车万
 	public static int mode = 0;
 	//飞机身上是否有buff
 	public static boolean isbuffed = false;
@@ -32,7 +32,7 @@ public class GameWindow extends JFrame{
 	//背景图片
 	BgObj bgobj=new BgObj(GameUtils.bgImg,0,-2000,2); 
 	//我方飞机
-	public PlaneObj planeobj=new PlaneObj(GameUtils.planeImg,290,550,20,30,0,this); 
+	public PlaneObj planeobj=new PlaneObj(GameUtils.planeImg,290,550,20,30,0,this);
 	//我方子弹
 	ShellObj shellobj=new ShellObj(GameUtils.shellImg,planeobj.getX()+3,planeobj.getY()-16,14,29,5,this); 
 	//boss
@@ -117,14 +117,7 @@ public class GameWindow extends JFrame{
 						buffcount=0;
 						money=0;
 						originatk=1;
-						GameUtils.shellObjList.clear();
-						GameUtils.bulletObjList.clear();
-						GameUtils.enemyObjList.clear();
-						GameUtils.explodeObjList.clear();
-						GameUtils.removeObjList.clear();
-						GameUtils.gameObjList.clear();
-						GameUtils.eliteObjList.clear();
-						GameUtils.bonusObjList.clear();
+						clearObj();
 						if(e.getX()>=210&&e.getX()<=390) {
 							if(e.getY()>=400&&e.getY()<=480) {
 								state = 0; 
@@ -139,14 +132,7 @@ public class GameWindow extends JFrame{
 						isbuffed=false;
 						buffkind=0;
 						buffcount=0;
-						GameUtils.shellObjList.clear();
-						GameUtils.bulletObjList.clear();
-						GameUtils.enemyObjList.clear();
-						GameUtils.explodeObjList.clear();
-						GameUtils.removeObjList.clear();
-						GameUtils.gameObjList.clear();
-						GameUtils.eliteObjList.clear();
-						GameUtils.bonusObjList.clear();
+						clearObj();
 						repaint();
 						if(e.getX()>=210&&e.getX()<=390) {
 							//监听鼠标位置判断模式
@@ -215,14 +201,11 @@ public class GameWindow extends JFrame{
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()==32) {
-					switch(state) {
-						case 1:
-							state=2;
-							break;
-						case 2:
-							state=1;
-							break;
-						default:
+					switch (state) {
+						case 1 -> state = 2;
+						case 2 -> state = 1;
+						default -> {
+						}
 					}
 				}
 			}
@@ -243,7 +226,18 @@ public class GameWindow extends JFrame{
 			}
 		}
 	}
-	
+
+	private void clearObj() {
+		GameUtils.shellObjList.clear();
+		GameUtils.bulletObjList.clear();
+		GameUtils.enemyObjList.clear();
+		GameUtils.explodeObjList.clear();
+		GameUtils.removeObjList.clear();
+		GameUtils.gameObjList.clear();
+		GameUtils.eliteObjList.clear();
+		GameUtils.bonusObjList.clear();
+	}
+
 	@Override
 	public void paint(Graphics g) {
 		//游戏未开始
@@ -258,11 +252,12 @@ public class GameWindow extends JFrame{
 			gImage.drawImage(GameUtils.explodeImg, 270, 350, this);
 			GameUtils.drawWord(gImage,"开始游戏", Color.yellow, 40, 218, 300);
 		}
-		
+
 		//
 		if(state==1) {
 			System.out.println("state=1");
 			//播放对应的音乐
+			if (mode==5 && !bgm.playing) bgm=new Bgm("resources/touhou.mp3");
 			if (!bgm.playing) {
 				bgm.start();
 				System.out.println("bgm start");
@@ -273,8 +268,16 @@ public class GameWindow extends JFrame{
 				bossCount++;
 				enemyCount=0;
 			}
+
 			gImage.drawImage(GameUtils.bgImg, 0, 0, this);
-			gImage.drawImage(GameUtils.planeImg,planeobj.getX(),planeobj.getY(),this);
+			if (mode==5) {
+				planeobj.altImg(GameUtils.reimuImg);
+				gImage.drawImage(GameUtils.reimuImg, planeobj.getX(), planeobj.getY(), this);
+			}
+			else {
+				gImage.drawImage(GameUtils.planeImg, planeobj.getX(), planeobj.getY(), this);
+			}
+
 			GameUtils.gameObjList.addAll(GameUtils.explodeObjList);
 			for(int i=0;i<GameUtils.gameObjList.size();i++) {
 				GameUtils.gameObjList.get(i).paintSelf(gImage);
@@ -283,19 +286,13 @@ public class GameWindow extends JFrame{
 			GameUtils.drawWord(gImage, "得分: "+score+"分", Color.GREEN, 20, 30, 100);
 			
 			if(mode==1) 
-				GameUtils.drawWord(gImage, "经典模式，按下空格键以暂停", Color.red, 20, 30, 550);
+				GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 550);
 			else if(mode==2) 
-				GameUtils.drawWord(gImage, "无尽模式，按下空格键以暂停", Color.red, 20, 30, 550);
+				GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 550);
 			else if(mode==3) {
 				GameUtils.drawWord(gImage, "金币: "+money, Color.GREEN, 20, 480, 100);
 				GameUtils.drawWord(gImage, "第 "+bossCount+" 关", Color.GREEN, 20, 30, 130);
-				GameUtils.drawWord(gImage, "关卡模式，按下空格键以暂停", Color.red, 20, 30, 550);
-				gImage.setColor(Color.white);
-				gImage.fillRect(20,570,100,10);
-				gImage.setColor(Color.red);
-				if(PlaneObj.life<=10) gImage.fillRect(20,570,PlaneObj.life*10,10);
-				else gImage.fillRect(20,570,100,10);
-				GameUtils.drawWord(gImage, "life:"+PlaneObj.life+"  atk:"+PlaneObj.atk, Color.red, 20, 360, 580);
+				drawPause(gImage);
 				for(BonusObj bonusobj:GameUtils.bonusObjList) {
 					if(planeobj.getRec().intersects(bonusobj.getRec())) {
 						if(bonusobj.kind==1) {
@@ -315,13 +312,7 @@ public class GameWindow extends JFrame{
 				}
 			}
 			else if(mode==4) {
-				GameUtils.drawWord(gImage, "生存模式，按下空格键以暂停", Color.red, 20, 30, 550);
-				gImage.setColor(Color.white);
-				gImage.fillRect(20,570,100,10);
-				gImage.setColor(Color.red);
-				if(PlaneObj.life<=10) gImage.fillRect(20,570,PlaneObj.life*10,10);
-				else gImage.fillRect(20,570,100,10);
-				GameUtils.drawWord(gImage, "life:"+PlaneObj.life+"  atk:"+PlaneObj.atk, Color.red, 20, 360, 580);
+				drawPause(gImage);
 				for(BonusObj bonusobj:GameUtils.bonusObjList) {
 					if(planeobj.getRec().intersects(bonusobj.getRec())) {
 						if(bonusobj.kind==1) {
@@ -337,6 +328,9 @@ public class GameWindow extends JFrame{
 					}
 				}
 			}
+			else{
+				GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 550);
+			}
 		}
 		if(state==3) {
 			System.out.println("state=3");
@@ -348,11 +342,7 @@ public class GameWindow extends JFrame{
 			gImage.drawImage(GameUtils.bgImg, 0, 0, this);
 			gImage.drawImage(GameUtils.explodeImg, planeobj.getX()-35, planeobj.getY()-50, this);
 			GameUtils.drawWord(gImage,"游戏结束", Color.red, 40, 218, 300);
-			GameUtils.drawWord(gImage, "得分: "+score+"分", Color.GREEN, 20, 30, 100);
-			gImage.setColor(Color.green);
-			gImage.fillRect(210,400,180,80);
-			GameUtils.drawWord(gImage, "回到首页", Color.red, 40, 220, 450);
-			bossobj=null;
+			drawScore(gImage);
 		}
 		if(state==4) {
 			if (bgm.playing) {
@@ -362,11 +352,7 @@ public class GameWindow extends JFrame{
 			gImage.drawImage(GameUtils.bgImg, 0, 0, this);
 			gImage.drawImage(GameUtils.explodeImg, bossobj.getX()+30, bossobj.getY(), this);
 			GameUtils.drawWord(gImage,"通关成功", Color.red, 40, 218, 300);
-			GameUtils.drawWord(gImage, "得分: "+score+"分", Color.GREEN, 20, 30, 100);
-			gImage.setColor(Color.green);
-			gImage.fillRect(210,400,180,80);
-			GameUtils.drawWord(gImage, "回到首页", Color.red, 40, 220, 450);
-			bossobj=null;
+			drawScore(gImage);
 		}
 		if(state==5) {
 			if (bgm.playing) {
@@ -397,7 +383,7 @@ public class GameWindow extends JFrame{
 				bgm.playing=false;
 			}
 			gImage.drawImage(GameUtils.bgImg, 0, 0, this);
-			price = (20 + 10 * bossCount) * (5 + 1 * difficulty) / 5;
+			price = (20 + 10 * bossCount) * (5 + difficulty) / 5;
 			String str = String.valueOf(price);
 			GameUtils.drawWord(gImage, "商店", Color.red, 60, 250, 120);
 			GameUtils.drawWord(gImage, "金币："+money, Color.red, 30, 220, 180);
@@ -431,7 +417,7 @@ public class GameWindow extends JFrame{
 		}
 		g.drawImage(offScreenImg,0,0,this);
 		count++;
-		if(isbuffed==true) {
+		if(isbuffed) {
 			buffcount++;
 			if(buffkind==2) {
 				PlaneObj.atk=originatk*2;
@@ -444,85 +430,131 @@ public class GameWindow extends JFrame{
 			}
 		}
 	}
-	
+
+	private void drawScore(Graphics gImage) {
+		GameUtils.drawWord(gImage, "得分: "+score+"分", Color.GREEN, 20, 30, 100);
+		gImage.setColor(Color.green);
+		gImage.fillRect(210,400,180,80);
+		GameUtils.drawWord(gImage, "回到首页", Color.red, 40, 220, 450);
+		bossobj=null;
+	}
+
+	private void drawPause(Graphics gImage) {
+		GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 550);
+		gImage.setColor(Color.white);
+		gImage.fillRect(20,570,100,10);
+		gImage.setColor(Color.red);
+		if(PlaneObj.life<=10) gImage.fillRect(20,570, PlaneObj.life*10,10);
+		else gImage.fillRect(20,570,100,10);
+		GameUtils.drawWord(gImage, "life:"+ PlaneObj.life+"  atk:"+ PlaneObj.atk, Color.red, 20, 360, 580);
+	}
+
 	void createObj() {
-		//每重画15次产生1个子弹和飞机
-		if(count%15==0) {
-			if(buffkind!=3) {
-				GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg,planeobj.getX()+3,planeobj.getY()-16,14,29,5,this));
-				GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size()-1));
-			}
-			else if(buffkind==3) {
-				GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg,planeobj.getX()-12,planeobj.getY()-16,14,29,5,this));
-				GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size()-1));
-				GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg,planeobj.getX()+18,planeobj.getY()-16,14,29,5,this));
-				GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size()-1));
-			}
-		}
-		if(count%(15-3*difficulty)==0) {
-			GameUtils.enemyObjList.add(new EnemyObj(GameUtils.enemyImg,(int)(Math.random()*12)*50,0,49,36,5,this));
-			GameUtils.gameObjList.add(GameUtils.enemyObjList.get(GameUtils.enemyObjList.size()-1));
-			if(bossobj==null) enemyCount++;
-		}
-		if(count%(15-3*difficulty)==0 && bossobj!=null) {
-			GameUtils.bulletObjList.add(new BulletObj(GameUtils.bulletImg,bossobj.getX()+76,bossobj.getY()+150,15,25,5,this));
-			GameUtils.gameObjList.add(GameUtils.bulletObjList.get(GameUtils.bulletObjList.size()-1));
-		}
-		if(enemyCount%(20-4*difficulty)==0 && bossobj==null && enemyCount!=0) {
-			bossobj = new BossObj(GameUtils.bossImg,250,35,155,100,5,this,bossCount*(10+2*difficulty));
-			GameUtils.gameObjList.add(bossobj);
-			if(bossdecflag==1) {
-				bossdecflag=0;
-				bossobj.life=bossobj.life*4/5;
-			}
-		}
-		if(count%(200-40*difficulty)==0 && (mode == 3|| mode == 4)) {
-			if(mode==4) {
-				GameUtils.eliteObjList.add(new EliteObj(GameUtils.eliteImg,(int)(Math.random()*6)*90+30,0,68,51,3,this));
-				GameUtils.gameObjList.add(GameUtils.eliteObjList.get(GameUtils.eliteObjList.size()-1));
-			}
-			else if(mode==3) {
-				GameUtils.eliteObjList.add(new EliteObj(GameUtils.eliteImg,(int)(Math.random()*6)*90+30,0,68,51,3,this,(3+2*bossCount)*(5+difficulty)/5));
-				GameUtils.gameObjList.add(GameUtils.eliteObjList.get(GameUtils.eliteObjList.size()-1));
-			}
-		}
-		if(count%(800+200*difficulty)==0 && (mode == 3|| mode == 4)) {
-			int kind = (int)(Math.random()*4)+1;
-			int kind2 = (int)(Math.random()*4)+1;
-			if(kind==1) {
-				GameUtils.bonusObjList.add(new BonusObj(GameUtils.lifeImg,(int)(Math.random()*12)*50,0,50,50,5,this,1));
-				GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
-			}
-			else if(kind==2) {
-				GameUtils.bonusObjList.add(new BonusObj(GameUtils.atkImg,(int)(Math.random()*12)*50,0,50,50,5,this,2));
-				GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
-			}
-			else if(kind==3) {
-				GameUtils.bonusObjList.add(new BonusObj(GameUtils.doubleImg,(int)(Math.random()*12)*50,0,50,50,5,this,3));
-				GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
-			}
-			else if(kind==4) {
-				if(kind2==1) {
-					GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg,(int)(Math.random()*12)*50,0,50,50,5,this,1));
-					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+		//车万模式干脆重画
+		if(mode==5){
+			System.out.println("in mode 5");
+			//生成一个无敌的大小姐
+			if (bossobj == null) {
+				bossobj = new BossObj(GameUtils.remiliaImg, 250, 35, 155, 100, 5, this, bossCount * (10 + 2 * difficulty));
+				GameUtils.gameObjList.add(bossobj);
+				if (bossdecflag == 1) {
+					bossdecflag = 0;
+					bossobj.life = bossobj.life * 100;
 				}
-				else if(kind2==2) {
-					GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg,(int)(Math.random()*12)*50,0,50,50,5,this,2));
-					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+			}
+			System.out.println("generated remilia");
+			//生成大小姐的子弹
+			if (count % (15 - 3 * difficulty) == 0 && bossobj != null) {
+				GameUtils.bulletObjList.add(new BulletObj(GameUtils.redBulletImg, bossobj.getX() + 76, bossobj.getY() + 150, 15, 25, 5, this));
+				GameUtils.gameObjList.add(GameUtils.bulletObjList.get(GameUtils.bulletObjList.size() - 1));
+
+			}
+			System.out.println("generated redbullet");
+			//每重画7次产生一个子弹
+			if (count % 7 == 0) {
+				if (buffkind != 3) {
+					GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg, planeobj.getX() + 3, planeobj.getY() - 16, 14, 29, 5, this));
+					GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size() - 1));
+				} else if (buffkind == 3) {
+					GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg, planeobj.getX() - 12, planeobj.getY() - 16, 14, 29, 5, this));
+					GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size() - 1));
+					GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg, planeobj.getX() + 18, planeobj.getY() - 16, 14, 29, 5, this));
+					GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size() - 1));
 				}
-				else if(kind2==3) {
-					GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg,(int)(Math.random()*12)*50,0,50,50,5,this,3));
-					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+			}
+			System.out.println("generated shell");
+
+		}else {
+			//每重画15次产生1个子弹和飞机
+			if (count % 15 == 0) {
+				if (buffkind != 3) {
+					GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg, planeobj.getX() + 3, planeobj.getY() - 16, 14, 29, 5, this));
+					GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size() - 1));
+				} else if (buffkind == 3) {
+					GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg, planeobj.getX() - 12, planeobj.getY() - 16, 14, 29, 5, this));
+					GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size() - 1));
+					GameUtils.shellObjList.add(new ShellObj(GameUtils.shellImg, planeobj.getX() + 18, planeobj.getY() - 16, 14, 29, 5, this));
+					GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size() - 1));
 				}
-				else if(kind2==4) {
-					GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg,(int)(Math.random()*12)*50,0,50,50,5,this,4));
-					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size()-1));
+			}
+			if (count % (15 - 3 * difficulty) == 0) {
+				GameUtils.enemyObjList.add(new EnemyObj(GameUtils.enemyImg, (int) (Math.random() * 12) * 50, 0, 49, 36, 5, this));
+				GameUtils.gameObjList.add(GameUtils.enemyObjList.get(GameUtils.enemyObjList.size() - 1));
+				if (bossobj == null) enemyCount++;
+			}
+			if (count % (15 - 3 * difficulty) == 0 && bossobj != null) {
+				GameUtils.bulletObjList.add(new BulletObj(GameUtils.bulletImg, bossobj.getX() + 76, bossobj.getY() + 150, 15, 25, 5, this));
+				GameUtils.gameObjList.add(GameUtils.bulletObjList.get(GameUtils.bulletObjList.size() - 1));
+			}
+			if (enemyCount % (20 - 4 * difficulty) == 0 && bossobj == null && enemyCount != 0) {
+				bossobj = new BossObj(GameUtils.bossImg, 250, 35, 155, 100, 5, this, bossCount * (10 + 2 * difficulty));
+				GameUtils.gameObjList.add(bossobj);
+				if (bossdecflag == 1) {
+					bossdecflag = 0;
+					bossobj.life = bossobj.life * 4 / 5;
+				}
+			}
+			if (count % (200 - 40 * difficulty) == 0 && (mode == 3 || mode == 4)) {
+				if (mode == 4) {
+					GameUtils.eliteObjList.add(new EliteObj(GameUtils.eliteImg, (int) (Math.random() * 6) * 90 + 30, 0, 68, 51, 3, this));
+					GameUtils.gameObjList.add(GameUtils.eliteObjList.get(GameUtils.eliteObjList.size() - 1));
+				} else if (mode == 3) {
+					GameUtils.eliteObjList.add(new EliteObj(GameUtils.eliteImg, (int) (Math.random() * 6) * 90 + 30, 0, 68, 51, 3, this, (3 + 2 * bossCount) * (5 + difficulty) / 5));
+					GameUtils.gameObjList.add(GameUtils.eliteObjList.get(GameUtils.eliteObjList.size() - 1));
+				}
+			}
+			if (count % (800 + 200 * difficulty) == 0 && (mode == 3 || mode == 4)) {
+				int kind = (int) (Math.random() * 4) + 1;
+				int kind2 = (int) (Math.random() * 4) + 1;
+				if (kind == 1) {
+					GameUtils.bonusObjList.add(new BonusObj(GameUtils.lifeImg, (int) (Math.random() * 12) * 50, 0, 50, 50, 5, this, 1));
+					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size() - 1));
+				} else if (kind == 2) {
+					GameUtils.bonusObjList.add(new BonusObj(GameUtils.atkImg, (int) (Math.random() * 12) * 50, 0, 50, 50, 5, this, 2));
+					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size() - 1));
+				} else if (kind == 3) {
+					GameUtils.bonusObjList.add(new BonusObj(GameUtils.doubleImg, (int) (Math.random() * 12) * 50, 0, 50, 50, 5, this, 3));
+					GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size() - 1));
+				} else if (kind == 4) {
+					if (kind2 == 1) {
+						GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg, (int) (Math.random() * 12) * 50, 0, 50, 50, 5, this, 1));
+						GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size() - 1));
+					} else if (kind2 == 2) {
+						GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg, (int) (Math.random() * 12) * 50, 0, 50, 50, 5, this, 2));
+						GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size() - 1));
+					} else if (kind2 == 3) {
+						GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg, (int) (Math.random() * 12) * 50, 0, 50, 50, 5, this, 3));
+						GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size() - 1));
+					} else if (kind2 == 4) {
+						GameUtils.bonusObjList.add(new BonusObj(GameUtils.ramdomImg, (int) (Math.random() * 12) * 50, 0, 50, 50, 5, this, 4));
+						GameUtils.gameObjList.add(GameUtils.bonusObjList.get(GameUtils.bonusObjList.size() - 1));
+					}
 				}
 			}
 		}
 	}
 	
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		GameWindow window = new GameWindow();
 		window.launch();
 	}

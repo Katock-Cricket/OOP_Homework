@@ -40,8 +40,8 @@ public class PlaneObj extends GameObj{
 		this.frame.addMouseMotionListener(new MouseAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				PlaneObj.super.x=e.getX()-11;
-				PlaneObj.super.y=e.getY()-16;
+				PlaneObj.super.x=e.getX()-width/2;
+				PlaneObj.super.y=e.getY()-height/2;
 			}
 		});
 	}

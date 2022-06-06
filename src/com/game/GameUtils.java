@@ -29,6 +29,9 @@ public class GameUtils {
 	public static Image doubleImg = Toolkit.getDefaultToolkit().getImage("imgs/doubleobj.png");
 
 	public static Image ramdomImg = Toolkit.getDefaultToolkit().getImage("imgs/randomobj.png");
+	public static Image redBulletImg = Toolkit.getDefaultToolkit().getImage("imgs/redBullet.png");
+	public static Image reimuImg = Toolkit.getDefaultToolkit().getImage("imgs/reimu.png");
+	public static Image remiliaImg = Toolkit.getDefaultToolkit().getImage("imgs/remilia.png");
 	
 	public static List<ShellObj> shellObjList = new ArrayList<>();
 	

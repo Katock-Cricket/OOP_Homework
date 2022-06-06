@@ -79,6 +79,9 @@ public class GameObj {
 	public void paintSelf(Graphics g) {
 		g.drawImage(img,x,y,null);
 	}
+	public void altImg(Image img){
+		this.img=img;
+	}
 	public Rectangle getRec(){//获取自身所在的矩形
 		return new Rectangle(x,y,width,height);
 	}
