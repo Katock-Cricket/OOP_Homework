@@ -82,19 +82,19 @@ public class GameWindow extends JFrame{
 							//监听鼠标位置判断模式
 							if(e.getY()>=80&&e.getY()<=160) {
 								state = 7; 
-								mode = 1;
+								mode = 2;
 							}
 							else if(e.getY()>=200&&e.getY()<=280) {
 								state = 7; 
-								mode = 2;
+								mode = 3;
 							}
 							else if(e.getY()>=320&&e.getY()<=400) {
 								state = 7; 
-								mode = 3;
+								mode = 4;
 							}
 							else if(e.getY()>=440&&e.getY()<=520) {
 								state = 7; 
-								mode = 4;
+								mode = 5;
 							}
 							repaint();
 						}
@@ -381,9 +381,9 @@ public class GameWindow extends JFrame{
 			gImage.fillRect(210, 440, 180, 80);
 			gImage.fillRect(500, 540, 100, 60);
 			GameUtils.drawWord(gImage, "经典模式", Color.red, 40, 220, 130);
-			GameUtils.drawWord(gImage, "无尽模式", Color.red, 40, 220, 250);
-			GameUtils.drawWord(gImage, "关卡模式", Color.red, 40, 220, 370);
-			GameUtils.drawWord(gImage, "生存模式", Color.red, 40, 220, 490);
+			GameUtils.drawWord(gImage, "关卡模式", Color.red, 40, 220, 250);
+			GameUtils.drawWord(gImage, "生存模式", Color.red, 40, 220, 370);
+			GameUtils.drawWord(gImage, "待定模式", Color.red, 40, 220, 490);
 			GameUtils.drawWord(gImage, "返回", Color.red, 40, 500, 580);
 			bossobj=null;
 			PlaneObj.life=10;
