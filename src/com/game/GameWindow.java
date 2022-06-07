@@ -454,12 +454,12 @@ public class GameWindow extends JFrame{
 		if(mode==5){
 			System.out.println("in mode 5");
 			//生成一个无敌的大小姐
-			if (bossobj == null) {
+			if (count>=30&& bossobj == null) {
 				bossobj = new BossObj(GameUtils.remiliaImg, 250, 35, 155, 100, 5, this, bossCount * (10 + 2 * difficulty));
 				GameUtils.gameObjList.add(bossobj);
 				if (bossdecflag == 1) {
 					bossdecflag = 0;
-					bossobj.life = bossobj.life * 100;
+					bossobj.life = bossobj.life * 10;
 				}
 			}
 			System.out.println("generated remilia");
