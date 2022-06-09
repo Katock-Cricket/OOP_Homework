@@ -29,7 +29,7 @@ public class GameWindow extends JFrame{
 	//难度 -1:简单 0：普通 1：困难
 	int difficulty=0;
 	//背景图片
-	BgObj bgobj=new BgObj(GameUtils.bgImg,0,-2000,2); 
+	BgObj bgobj=new BgObj(GameUtils.bgImg,0,-2000,2);
 	//我方飞机
 	public PlaneObj planeobj=new PlaneObj(GameUtils.planeImg,290,550,20,30,0,this);
 	//我方子弹

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class GameUtils {
 	//背景图片
-	public static Image bgImg = Toolkit.getDefaultToolkit().getImage("imgs/bg.jpg");
+	public static Image bgImg = Toolkit.getDefaultToolkit().getImage("imgs/bg2.jpg");
 	
 	public static Image bossImg = Toolkit.getDefaultToolkit().getImage("imgs/boss.png");
 	
@@ -18,7 +18,7 @@ public class GameUtils {
 	
 	public static Image enemyImg = Toolkit.getDefaultToolkit().getImage("imgs/enemy.png");
 	
-	public static Image bulletImg = Toolkit.getDefaultToolkit().getImage("imgs/bullet.png");
+	public static Image bulletImg = Toolkit.getDefaultToolkit().getImage("imgs/bullet1.png");
 	
 	public static Image eliteImg = Toolkit.getDefaultToolkit().getImage("imgs/Elite.png");
 	
