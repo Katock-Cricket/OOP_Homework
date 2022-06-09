@@ -1,9 +1,8 @@
 package com.game;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
-import javax.swing.*;
 
 public class GameWindow extends JFrame{
 	//游戏状态：0：主页 1：游戏状态 2：暂停 3：游戏失败 4：游戏成功 5：选择模式 6:关中商店 7:选择难度
