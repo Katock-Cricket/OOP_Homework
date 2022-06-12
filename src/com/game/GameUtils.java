@@ -44,6 +44,7 @@ public class GameUtils {
 	public static List<GameObj> removeObjList = new ArrayList<>();
 	
 	public static List<BulletObj> bulletObjList = new ArrayList<>();
+	public static List<RedBullet> redBulletList = new ArrayList<>();
 	
 	public static List<EliteObj> eliteObjList = new ArrayList<>();
 	
