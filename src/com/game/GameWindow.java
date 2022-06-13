@@ -35,6 +35,7 @@ public class GameWindow extends JFrame {
     BgObj bgobj = new BgObj(GameUtils.bgImg, 0, -200, 2);
     //我方飞机
     public PlaneObj planeobj = new PlaneObj(GameUtils.planeImg, 290, 750, 20, 30, 0, this);
+    //我方城管
     public Reimu reimu = new Reimu(GameUtils.reimuImg, 290, 750, 10, 15, 0, this);
     //我方子弹
     ShellObj shellobj = new ShellObj(GameUtils.shellImg, planeobj.getX() + 3, planeobj.getY() - 16, 14, 29, 5, this);
@@ -64,12 +65,14 @@ public class GameWindow extends JFrame {
         this.setSize(width, height);
         this.setLocationRelativeTo(null);
         this.setTitle("飞机大战");
+        //加载蕾米莉亚的6个姿态
         GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r1.png"));
         GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r2.png"));
         GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r3.png"));
         GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r4.png"));
         GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r5.png"));
         GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r6.png"));
+
         GameUtils.gameObjList.add(bgobj);
 //        GameUtils.gameObjList.add(planeobj);
 //        GameUtils.gameObjList.add(reimu);
@@ -188,7 +191,10 @@ public class GameWindow extends JFrame {
                             }
                             PlaneObj.life = 10 - 2 * difficulty;
                             GameUtils.gameObjList.add(bgobj);
-                            GameUtils.gameObjList.add(planeobj);
+                            if(mode==5)
+                                GameUtils.gameObjList.add(reimu);
+                            else
+                                GameUtils.gameObjList.add(planeobj);
                             repaint();
                         } else if (e.getX() >= 700 && e.getX() <= 800) {
                             if (e.getY() >= 840 && e.getY() <= 900) {
@@ -476,7 +482,7 @@ public class GameWindow extends JFrame {
             System.out.println("in mode 5");
             //生成一个无敌的大小姐
             if (count >= 30 && remilia == null) {
-                remilia = new Remilia(GameUtils.remiliaImg, 250, 35, 155, 100, 3, this, 100);
+                remilia = new Remilia(GameUtils.remiliaImg, 250, 35, 155, 100, 3, this, 300);
                 GameUtils.gameObjList.add(remilia);
             }
 
