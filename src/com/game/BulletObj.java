@@ -20,7 +20,7 @@ public class BulletObj extends GameObj{
 			}
 			else GameWindow.state = 3;
 		}
-		if(y>600) {
+		if(y>1000) {
 			this.x=-300;
 			this.y=300;
 			GameUtils.removeObjList.add(this);

@@ -32,7 +32,7 @@ public class GameWindow extends JFrame {
     //难度 -1:简单 0：普通 1：困难
     int difficulty = 0;
     //背景图片
-    BgObj bgobj = new BgObj(GameUtils.bgImg, 0, 0, 2);
+    BgObj bgobj = new BgObj(GameUtils.bgImg, 0, -200, 2);
     //我方飞机
     public PlaneObj planeobj = new PlaneObj(GameUtils.planeImg, 290, 750, 20, 30, 0, this);
     public Reimu reimu = new Reimu(GameUtils.reimuImg, 290, 750, 10, 15, 0, this);
@@ -110,7 +110,7 @@ public class GameWindow extends JFrame {
                             }
                             repaint();
                         } else if (e.getX() >= 700 && e.getX() <= 800) {
-                            if (e.getY() >= 900 && e.getY() <= 1000) {
+                            if (e.getY() >= 840 && e.getY() <= 900) {
                                 state = 0;
                                 repaint();
                             }
@@ -143,7 +143,7 @@ public class GameWindow extends JFrame {
                         buffcount = 0;
                         clearObj();
                         repaint();
-                        if (e.getX() >= 310 && e.getX() <= 490) {
+                        if (e.getX() >= 300 && e.getX() <= 500) {
                             //监听鼠标位置判断模式
                             if (e.getY() >= 200 && e.getY() <= 280) {
                                 if (shopflag1 == 0 && (money >= price)) {
@@ -151,19 +151,19 @@ public class GameWindow extends JFrame {
                                     shopflag1 = 1;
                                     money -= price;
                                 }
-                            } else if (e.getY() >= 320 && e.getY() <= 400) {
+                            } else if (e.getY() >= 400 && e.getY() <= 480) {
                                 if (shopflag2 == 0 && (money >= price)) {
                                     originatk++;
                                     shopflag2 = 1;
                                     money -= price;
                                 }
-                            } else if (e.getY() >= 440 && e.getY() <= 520) {
+                            } else if (e.getY() >= 600 && e.getY() <= 680) {
                                 if (shopflag3 == 0 && (money >= price)) {
                                     bossdecflag = 1;
                                     shopflag3 = 1;
                                     money -= price;
                                 }
-                            } else {
+                            } else if (e.getY() >= 720 && e.getY() <= 750){
                                 state = 1;
                                 PlaneObj.atk = originatk;
                                 shopflag1 = 0;
@@ -187,9 +187,11 @@ public class GameWindow extends JFrame {
                                 difficulty = 1;
                             }
                             PlaneObj.life = 10 - 2 * difficulty;
+                            GameUtils.gameObjList.add(bgobj);
+                            GameUtils.gameObjList.add(planeobj);
                             repaint();
-                        } else if (e.getX() >= 500 && e.getX() <= 600) {
-                            if (e.getY() >= 840 && e.getY() <= 1000) {
+                        } else if (e.getX() >= 700 && e.getX() <= 800) {
+                            if (e.getY() >= 840 && e.getY() <= 900) {
                                 state = 5;
                                 repaint();
                             }
@@ -302,11 +304,11 @@ public class GameWindow extends JFrame {
             GameUtils.drawWord(gImage, "得分: " + score + "分", Color.GREEN, 20, 30, 100);
 
             if (mode == 1)
-                GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 950);
+                GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 900);
             else if (mode == 2)
-                GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 950);
+                GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 900);
             else if (mode == 3) {
-                GameUtils.drawWord(gImage, "金币: " + money, Color.GREEN, 20, 480, 100);
+                GameUtils.drawWord(gImage, "金币: " + money, Color.GREEN, 20, 680, 100);
                 GameUtils.drawWord(gImage, "第 " + bossCount + " 关", Color.GREEN, 20, 30, 130);
                 drawPause(gImage);
                 for (BonusObj bonusobj : GameUtils.bonusObjList) {
@@ -340,7 +342,7 @@ public class GameWindow extends JFrame {
                     }
                 }
             } else {
-                GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 950);
+                GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 900);
             }
         }
         if (state == 3) {
@@ -384,12 +386,12 @@ public class GameWindow extends JFrame {
             gImage.fillRect(310, 400, 180, 80);
             gImage.fillRect(310, 620, 180, 80);
             gImage.fillRect(310, 840, 180, 80);
-            gImage.fillRect(700, 940, 100, 60);
+            gImage.fillRect(700, 840, 100, 60);
             GameUtils.drawWord(gImage, "经典模式", Color.red, 40, 320, 230);
             GameUtils.drawWord(gImage, "关卡模式", Color.red, 40, 320, 450);
             GameUtils.drawWord(gImage, "生存模式", Color.red, 40, 320, 670);
             GameUtils.drawWord(gImage, "车万模式", Color.red, 40, 320, 890);
-            GameUtils.drawWord(gImage, "返回", Color.red, 40, 700, 980);
+            GameUtils.drawWord(gImage, "返回", Color.red, 40, 700, 880);
             bossobj = null;
             PlaneObj.life = 10;
             originatk = 1;
@@ -404,23 +406,23 @@ public class GameWindow extends JFrame {
             gImage.drawImage(GameUtils.bgImg, 0, 0, this);
             price = (20 + 10 * bossCount) * (5 + difficulty) / 5;
             String str = String.valueOf(price);
-            GameUtils.drawWord(gImage, "商店", Color.red, 60, 250, 120);
-            GameUtils.drawWord(gImage, "金币：" + money, Color.red, 30, 220, 180);
+            GameUtils.drawWord(gImage, "商店", Color.red, 60, 350, 120);
+            GameUtils.drawWord(gImage, "金币：" + money, Color.red, 30, 320, 180);
             gImage.setColor(Color.green);
-            gImage.fillRect(200, 200, 200, 80);
-            gImage.fillRect(200, 320, 200, 80);
-            gImage.fillRect(200, 440, 200, 80);
-            gImage.fillRect(240, 540, 120, 30);
-            GameUtils.drawWord(gImage, "增加2生命值", Color.red, 30, 200, 250);
-            GameUtils.drawWord(gImage, str, Color.red, 30, 420, 250);
+            gImage.fillRect(300, 200, 200, 80);
+            gImage.fillRect(300, 400, 200, 80);
+            gImage.fillRect(300, 600, 200, 80);
+            gImage.fillRect(340, 720, 120, 30);
+            GameUtils.drawWord(gImage, "增加2生命值", Color.red, 30, 300, 250);
+            GameUtils.drawWord(gImage, str, Color.red, 30, 520, 250);
             if (shopflag1 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 540, 250);
-            GameUtils.drawWord(gImage, "攻击力+1", Color.red, 30, 200, 370);
-            GameUtils.drawWord(gImage, str, Color.red, 30, 420, 370);
-            if (shopflag2 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 540, 370);
-            GameUtils.drawWord(gImage, "BOSS生命-20%", Color.red, 30, 200, 490);
-            GameUtils.drawWord(gImage, str, Color.red, 30, 420, 490);
-            if (shopflag3 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 540, 490);
-            GameUtils.drawWord(gImage, "下一关", Color.red, 20, 270, 560);
+            GameUtils.drawWord(gImage, "攻击力+1", Color.red, 30, 300, 450);
+            GameUtils.drawWord(gImage, str, Color.red, 30, 520, 450);
+            if (shopflag2 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 540, 450);
+            GameUtils.drawWord(gImage, "BOSS生命-20%", Color.red, 30, 300, 650);
+            GameUtils.drawWord(gImage, str, Color.red, 30, 520, 650);
+            if (shopflag3 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 540, 650);
+            GameUtils.drawWord(gImage, "下一关", Color.red, 20, 370, 740);
         }
         if (state == 7) {
             gImage.drawImage(GameUtils.bgImg, 0, 0, this);
@@ -428,11 +430,11 @@ public class GameWindow extends JFrame {
             gImage.fillRect(310, 180, 180, 80);
             gImage.fillRect(310, 400, 180, 80);
             gImage.fillRect(310, 620, 180, 80);
-            gImage.fillRect(600, 840, 100, 60);
+            gImage.fillRect(700, 840, 100, 60);
             GameUtils.drawWord(gImage, "简单", Color.red, 40, 360, 230);
             GameUtils.drawWord(gImage, "普通", Color.red, 40, 360, 450);
             GameUtils.drawWord(gImage, "困难", Color.red, 40, 360, 670);
-            GameUtils.drawWord(gImage, "返回", Color.red, 40, 600, 880);
+            GameUtils.drawWord(gImage, "返回", Color.red, 40, 700, 880);
         }
         g.drawImage(offScreenImg, 0, 0, this);
         count++;
@@ -459,13 +461,13 @@ public class GameWindow extends JFrame {
     }
 
     private void drawPause(Graphics gImage) {
-        GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 550);
+        GameUtils.drawWord(gImage, "按下空格键以暂停", Color.red, 20, 30, 850);
         gImage.setColor(Color.white);
-        gImage.fillRect(20, 570, 100, 10);
+        gImage.fillRect(20, 870, 100, 10);
         gImage.setColor(Color.red);
-        if (PlaneObj.life <= 10) gImage.fillRect(20, 570, PlaneObj.life * 10, 10);
-        else gImage.fillRect(20, 570, 100, 10);
-        GameUtils.drawWord(gImage, "life:" + PlaneObj.life + "  atk:" + PlaneObj.atk, Color.red, 20, 360, 580);
+        if (PlaneObj.life <= 10) gImage.fillRect(20, 870, PlaneObj.life * 10, 10);
+        else gImage.fillRect(20, 870, 100, 10);
+        GameUtils.drawWord(gImage, "life:" + PlaneObj.life + "  atk:" + PlaneObj.atk, Color.red, 20, 560, 880);
     }
 
     void createObj() {
@@ -523,16 +525,16 @@ public class GameWindow extends JFrame {
                     GameUtils.gameObjList.add(GameUtils.shellObjList.get(GameUtils.shellObjList.size() - 1));
                 }
             }
-            if (count % (15 - 3 * difficulty) == 0) {
-                GameUtils.enemyObjList.add(new EnemyObj(GameUtils.enemyImg, (int) (Math.random() * 12) * 50, 0, 49, 36, 5, this));
+            if (count % (12 - 2 * difficulty) == 0) {
+                GameUtils.enemyObjList.add(new EnemyObj(GameUtils.enemyImg, (int) (Math.random() * 16) * 50, 0, 49, 36, 6, this));
                 GameUtils.gameObjList.add(GameUtils.enemyObjList.get(GameUtils.enemyObjList.size() - 1));
                 if (bossobj == null) enemyCount++;
             }
             if (count % (15 - 3 * difficulty) == 0 && bossobj != null) {
-                GameUtils.bulletObjList.add(new BulletObj(GameUtils.bulletImg, bossobj.getX() + 76, bossobj.getY() + 150, 15, 25, 5, this));
+                GameUtils.bulletObjList.add(new BulletObj(GameUtils.bulletImg, bossobj.getX() + 76, bossobj.getY() + 150, 15, 25, 6, this));
                 GameUtils.gameObjList.add(GameUtils.bulletObjList.get(GameUtils.bulletObjList.size() - 1));
             }
-            if (enemyCount % (20 - 4 * difficulty) == 0 && bossobj == null && enemyCount != 0) {
+            if (enemyCount % (30 - 5 * difficulty) == 0 && bossobj == null && enemyCount != 0) {
                 bossobj = new BossObj(GameUtils.bossImg, 250, 35, 155, 100, 5, this, bossCount * (10 + 2 * difficulty));
                 GameUtils.gameObjList.add(bossobj);
                 if (bossdecflag == 1) {
@@ -542,10 +544,10 @@ public class GameWindow extends JFrame {
             }
             if (count % (200 - 40 * difficulty) == 0 && (mode == 3 || mode == 4)) {
                 if (mode == 4) {
-                    GameUtils.eliteObjList.add(new EliteObj(GameUtils.eliteImg, (int) (Math.random() * 6) * 90 + 30, 0, 68, 51, 3, this));
+                    GameUtils.eliteObjList.add(new EliteObj(GameUtils.eliteImg, (int) (Math.random() * 8) * 92 + 30, 0, 68, 51, 4, this));
                     GameUtils.gameObjList.add(GameUtils.eliteObjList.get(GameUtils.eliteObjList.size() - 1));
                 } else if (mode == 3) {
-                    GameUtils.eliteObjList.add(new EliteObj(GameUtils.eliteImg, (int) (Math.random() * 6) * 90 + 30, 0, 68, 51, 3, this, (3 + 2 * bossCount) * (5 + difficulty) / 5));
+                    GameUtils.eliteObjList.add(new EliteObj(GameUtils.eliteImg, (int) (Math.random() * 8) * 92 + 30, 0, 68, 51, 4, this, (3 + 2 * bossCount) * (5 + difficulty) / 5));
                     GameUtils.gameObjList.add(GameUtils.eliteObjList.get(GameUtils.eliteObjList.size() - 1));
                 }
             }

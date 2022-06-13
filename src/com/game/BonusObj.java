@@ -13,7 +13,7 @@ public class BonusObj extends GameObj{
 		// TODO Auto-generated method stub
 		super.paintSelf(g);
 		y += speed;
-		if(y>600) {
+		if(y>1000) {
 			this.x=-600;
 			this.y=600;
 			GameUtils.removeObjList.add(this);

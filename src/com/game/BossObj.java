@@ -14,7 +14,7 @@ public class BossObj extends GameObj{
 	public void paintSelf(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paintSelf(g);
-		if(x > 550 || x < -50) {
+		if(x > 750 || x < -50) {
 			speed = - speed;
 		}
 		x+=speed;

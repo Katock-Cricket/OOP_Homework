@@ -38,7 +38,7 @@ public class EnemyObj extends GameObj{
 				GameUtils.removeObjList.add(this);
 			}
 		}
-		if(y>600) {
+		if(y>1000) {
 			this.x=-200;
 			this.y=200;
 			GameUtils.removeObjList.add(this);

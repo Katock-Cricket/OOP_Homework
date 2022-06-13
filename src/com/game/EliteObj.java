@@ -52,7 +52,7 @@ public class EliteObj extends GameObj{
 		g.fillRect(this.x+10,this.y+50,50,10);
 		g.setColor(Color.red);
 		g.fillRect(this.x+10,this.y+50,life*50/originlife,10);
-		if(y>600) {
+		if(y>1000) {
 			if(life>0&&(GameWindow.mode==4||GameWindow.mode==3)) {
 				PlaneObj.life-=2;
 			}

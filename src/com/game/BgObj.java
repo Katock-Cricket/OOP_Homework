@@ -17,7 +17,7 @@ public class BgObj extends GameObj{
 		super.paintSelf(g);
 		y+=speed;
 		if(y>=0) {
-			y = -2000;
+			y = -1800;
 		}
 	}
 	
