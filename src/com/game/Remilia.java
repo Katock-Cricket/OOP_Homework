@@ -14,7 +14,7 @@ public class Remilia extends GameObj{
     public void paintSelf(Graphics g) {
         // TODO Auto-generated method stub
         super.paintSelf(g);
-        if(x > 800 || x < -50) {
+        if(x > 700 || x < -50) {
             speed = - speed;
         }
         x+=speed;
@@ -23,7 +23,7 @@ public class Remilia extends GameObj{
                 shellobj.setX(-100);
                 shellobj.setY(100);
                 GameUtils.removeObjList.add(shellobj);
-                life-=PlaneObj.atk;
+                life-=Reimu.atk;
             }
             if(life<=0) {
                 life=-1;
@@ -43,6 +43,9 @@ public class Remilia extends GameObj{
                 }
                 else if(GameWindow.mode==3) {
                     GameWindow.state=6;
+                }
+                else if (GameWindow.mode==5){
+                    GameWindow.state=4;
                 }
             }
         }

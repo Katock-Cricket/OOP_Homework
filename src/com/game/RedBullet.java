@@ -9,6 +9,7 @@ public class RedBullet extends GameObj{
     double originX, originY;
     double alpha;
     int cnt=0;
+    double a=0.2;
 
     @Override
     public void paintSelf(Graphics g) {
@@ -16,10 +17,11 @@ public class RedBullet extends GameObj{
         super.paintSelf(g);
         this.x = (int)(this.originX + cnt*Math.cos(alpha));
         this.y = (int)(this.originY + cnt*Math.sin(alpha));
-        cnt += 4;
-        if(this.getRec().intersects(this.frame.planeobj.getRec())) {
+        cnt += a;
+        a+=0.05;
+        if(this.getRec().intersects(this.frame.reimu.getRec())) {
             if(GameWindow.mode==4||GameWindow.mode==3) {
-                PlaneObj.life-=5;
+                Reimu.life-=5;
                 this.x=-300;
                 this.y=300;
                 GameUtils.removeObjList.add(this);
@@ -36,7 +38,7 @@ public class RedBullet extends GameObj{
     @Override
     public Rectangle getRec() {
         // TODO Auto-generated method stub
-        return super.getRec();
+        return new Rectangle(x+2,y+2,width,height);
     }
 
     public RedBullet(Image img, int x, int y, int width, int height, double speed, GameWindow frame, double alpha) {
