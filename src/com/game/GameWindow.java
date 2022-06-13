@@ -2,6 +2,7 @@ package com.game;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.MemoryImageSource;
 
 import javax.swing.*;
 
@@ -63,6 +64,12 @@ public class GameWindow extends JFrame {
         this.setSize(width, height);
         this.setLocationRelativeTo(null);
         this.setTitle("飞机大战");
+        GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r1.png"));
+        GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r2.png"));
+        GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r3.png"));
+        GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r4.png"));
+        GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r5.png"));
+        GameUtils.remiliaImgList.add(Toolkit.getDefaultToolkit().getImage("imgs/r6.png"));
         GameUtils.gameObjList.add(bgobj);
 //        GameUtils.gameObjList.add(planeobj);
 //        GameUtils.gameObjList.add(reimu);
@@ -236,6 +243,8 @@ public class GameWindow extends JFrame {
 
     @Override
     public void paint(Graphics g) {
+        if (state!=1)
+            showCursor();
         //游戏未开始
         if (offScreenImg == null) {
             offScreenImg = createImage(width, height);
@@ -250,6 +259,7 @@ public class GameWindow extends JFrame {
         }
         //
         if (state == 1) {
+            hideCursor();
             System.out.println("state=1");
             //播放对应的音乐
             if (mode == 5 && !bgm.playing) bgm = new Bgm("resources/touhou.mp3");
@@ -277,6 +287,11 @@ public class GameWindow extends JFrame {
             } else {
                 gImage.drawImage(GameUtils.planeImg, planeobj.getX(), planeobj.getY(), this);
                 System.out.println("draw plane");
+            }
+            //变换蕾米莉亚的姿态
+            if (remilia!=null) {
+                remilia.altImg();
+                gImage.drawImage(remilia.img, remilia.x, remilia.y, this);
             }
 
             GameUtils.gameObjList.addAll(GameUtils.explodeObjList);
@@ -462,6 +477,7 @@ public class GameWindow extends JFrame {
                 remilia = new Remilia(GameUtils.remiliaImg, 250, 35, 155, 100, 3, this, 100);
                 GameUtils.gameObjList.add(remilia);
             }
+
             //生成大小姐的子弹
             if (count % 15 == 0 && remilia != null) {
                 GameUtils.redBulletList.add(new RedBullet(GameUtils.redBulletImg, remilia.getX() + 76, remilia.getY() + 150, 7, 7, 5, this, pi / 9));
@@ -480,6 +496,11 @@ public class GameWindow extends JFrame {
                 GameUtils.gameObjList.add(GameUtils.redBulletList.get(GameUtils.redBulletList.size() - 1));
                 GameUtils.redBulletList.add(new RedBullet(GameUtils.redBulletImg, remilia.getX() + 76, remilia.getY() + 150, 7, 7, 5, this, 8 * pi / 9));
                 GameUtils.gameObjList.add(GameUtils.redBulletList.get(GameUtils.redBulletList.size() - 1));
+            }
+            //生成冈格尼尔之枪
+            if (count % 300 == 0 && remilia != null){
+                Gungnir gungnir = new Gungnir(GameUtils.gunImg, remilia.getX() + 76, remilia.getY() + 150, 80, 100, 20, this);
+                GameUtils.gameObjList.add(gungnir);
             }
             //每重画8次产生2个子弹
             if (count % 8 == 0) {
@@ -558,7 +579,13 @@ public class GameWindow extends JFrame {
             }
         }
     }
-
+    public void hideCursor() {
+        Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(0, 0, new int[0], 0, 0));
+        this.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0), null));
+    }
+    public void showCursor() {
+        this.setCursor(Cursor.getDefaultCursor());
+    }
     public static void main(String[] args) {
         GameWindow window = new GameWindow();
         window.launch();

@@ -10,6 +10,8 @@ public class Remilia extends GameObj{
     int life;
     int dead = 0;
     int originlife;
+    int altCnt=0;
+    int i=0;
     @Override
     public void paintSelf(Graphics g) {
         // TODO Auto-generated method stub
@@ -59,6 +61,16 @@ public class Remilia extends GameObj{
     public Rectangle getRec() {
         // TODO Auto-generated method stub
         return super.getRec();
+    }
+    //支持贴图自动变换
+    public void altImg(){
+        altCnt++;
+        if (i==6) i=0;
+        if (altCnt%40 == 0){
+            this.img = GameUtils.remiliaImgList.get(i);
+            i++;
+        }
+        if (altCnt>100000) altCnt=0;
     }
 
     public Remilia(Image img, int x, int y, int width, int height, double speed, GameWindow frame) {

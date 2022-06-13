@@ -1,0 +1,44 @@
+package com.game;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+
+public class Gungnir extends GameObj{
+    int readyCnt=0;
+
+    @Override
+    public void paintSelf(Graphics g) {
+        // TODO Auto-generated method stub
+        super.paintSelf(g);
+        if (readyCnt>100){
+            y += speed;
+        }else {
+            readyCnt++;
+        }
+        if(this.getRec().intersects(this.frame.planeobj.getRec())) {
+            if(GameWindow.mode==4||GameWindow.mode==3) {
+                PlaneObj.life-=5;
+                this.x=-300;
+                this.y=300;
+                GameUtils.removeObjList.add(this);
+            }
+            else GameWindow.state = 3;
+        }
+        if(y>1000) {
+            this.x=-300;
+            this.y=300;
+            GameUtils.removeObjList.add(this);
+        }
+    }
+
+    @Override
+    public Rectangle getRec() {
+        // TODO Auto-generated method stub
+        return super.getRec();
+    }
+
+    public Gungnir(Image img, int x, int y, int width, int height, double speed, GameWindow frame) {
+        super(img, x, y, width, height, speed, frame);
+    }
+}
