@@ -128,8 +128,8 @@ public class GameWindow extends JFrame {
                         money = 0;
                         originatk = 1;
                         clearObj();
-                        if (e.getX() >= 310 && e.getX() <= 390) {
-                            if (e.getY() >= 500 && e.getY() <= 600) {
+                        if (e.getX() >= 310 && e.getX() <= 490) {
+                            if (e.getY() >= 500 && e.getY() <= 580) {
                                 state = 0;
                                 mode = 0;
                             }
