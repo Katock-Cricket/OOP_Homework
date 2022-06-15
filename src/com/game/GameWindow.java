@@ -172,7 +172,8 @@ public class GameWindow extends JFrame {
                                 shopflag1 = 0;
                                 shopflag2 = 0;
                                 shopflag3 = 0;
-
+                                GameUtils.gameObjList.add(bgobj);
+                                GameUtils.gameObjList.add(planeobj);
                             }
                         }
                         repaint();
@@ -421,13 +422,13 @@ public class GameWindow extends JFrame {
             gImage.fillRect(340, 720, 120, 30);
             GameUtils.drawWord(gImage, "增加2生命值", Color.red, 30, 300, 250);
             GameUtils.drawWord(gImage, str, Color.red, 30, 520, 250);
-            if (shopflag1 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 540, 250);
+            if (shopflag1 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 640, 250);
             GameUtils.drawWord(gImage, "攻击力+1", Color.red, 30, 300, 450);
             GameUtils.drawWord(gImage, str, Color.red, 30, 520, 450);
-            if (shopflag2 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 540, 450);
+            if (shopflag2 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 640, 450);
             GameUtils.drawWord(gImage, "BOSS生命-20%", Color.red, 30, 300, 650);
             GameUtils.drawWord(gImage, str, Color.red, 30, 520, 650);
-            if (shopflag3 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 540, 650);
+            if (shopflag3 == 1) GameUtils.drawWord(gImage, "√", Color.red, 30, 640, 650);
             GameUtils.drawWord(gImage, "下一关", Color.red, 20, 370, 740);
         }
         if (state == 7) {
